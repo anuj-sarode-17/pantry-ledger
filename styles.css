@@ -288,16 +288,52 @@ main { margin-top: 18px; display: flex; flex-direction: column; gap: 22px; }
 
 .empty-state { color: var(--muted); font-size: 0.9rem; padding: 20px 4px; }
 
-/* ---------- add form ---------- */
-.add-card {
-  border: 1px dashed var(--line);
+/* ---------- quick actions (add / scan) ---------- */
+.action-zone { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+
+.quick-actions { display: flex; gap: 8px; }
+.qa-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 11px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.86rem;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.qa-btn:hover, .qa-btn:focus-visible { background: var(--surface-2); }
+.qa-btn svg { flex: none; }
+
+.panel {
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 12px;
   background: var(--surface);
+  box-shadow: var(--shadow);
 }
-.add-card summary { cursor: pointer; font-weight: 500; color: var(--accent); font-size: 0.9rem; list-style: none; display: flex; align-items: center; gap: 6px; }
-.add-card summary::-webkit-details-marker { display: none; }
-.add-card[open] summary { margin-bottom: 12px; }
+.panel-back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 2px 4px 2px 0;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+.panel-back:hover { color: var(--accent); }
+.panel-title { font-size: 1rem; font-weight: 600; margin-bottom: 10px; }
+
 .add-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .add-grid .full { grid-column: 1 / -1; }
 .add-grid label { display: block; font-size: 0.72rem; color: var(--muted); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.04em; }

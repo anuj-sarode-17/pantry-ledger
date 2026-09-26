@@ -17,7 +17,6 @@
   var dateInput = document.getElementById("scan-date");
   var addRowBtn = document.getElementById("scan-add-row");
   var commitBtn = document.getElementById("scan-commit");
-  var scanCard = document.getElementById("scan-card");
 
   if (!fileInput) return;
 
@@ -338,7 +337,7 @@
         window.PantryApp.setStatus("Added " + rows.length + " item" + (rows.length === 1 ? "" : "s") + " from your receipt.", "");
         rowsEl.innerHTML = "";
         reviewWrap.hidden = true;
-        scanCard.open = false;
+        if (window.closePanel) window.closePanel();
       })
       .catch(function (err) {
         showError("Couldn't save: " + (err && err.message ? err.message : "unknown error"));

@@ -38,96 +38,111 @@
   </div>
 </header>
 
+<div class="action-zone">
+    <div class="quick-actions" id="quick-actions">
+      <button type="button" class="qa-btn" id="add-toggle-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        Add item
+      </button>
+      <button type="button" class="qa-btn" id="scan-toggle-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        Scan receipt
+      </button>
+    </div>
+
+    <div class="panel" id="add-panel" hidden>
+      <button type="button" class="panel-back" id="add-back-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        Back
+      </button>
+      <h2 class="panel-title">Add an item</h2>
+      <form id="add-form">
+        <div class="add-grid">
+          <div class="full">
+            <label for="f-name">Item name</label>
+            <input id="f-name" type="text" required maxlength="60" placeholder="e.g. Cumin seeds" />
+          </div>
+          <div>
+            <label for="f-category">Category</label>
+            <input id="f-category" list="cat-options" maxlength="40" placeholder="e.g. Whole Spices" required />
+            <datalist id="cat-options"></datalist>
+          </div>
+          <div>
+            <label for="f-stock">Stock level</label>
+            <select id="f-stock">
+              <option value="Adequate" selected>Adequate</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+          <div class="full">
+            <label for="f-location">Location <span style="text-transform:none;">(optional)</span></label>
+            <input id="f-location" type="text" maxlength="60" placeholder="e.g. Top shelf, garage" />
+          </div>
+          <div>
+            <label for="f-price">Price paid <span style="text-transform:none;">(optional)</span></label>
+            <input id="f-price" type="number" step="0.01" min="0" placeholder="e.g. 6.99" />
+          </div>
+          <div>
+            <label for="f-store">Bought at <span style="text-transform:none;">(optional)</span></label>
+            <input id="f-store" type="text" maxlength="50" placeholder="e.g. Costco" />
+          </div>
+          <div class="full">
+            <label for="f-buy-date">Purchase date <span style="text-transform:none;">(optional)</span></label>
+            <input id="f-buy-date" type="date" />
+          </div>
+        </div>
+        <div class="add-actions">
+          <button class="primary-btn" type="submit">Add to pantry</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="panel" id="scan-panel" hidden>
+      <button type="button" class="panel-back" id="scan-back-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        Back
+      </button>
+      <h2 class="panel-title">Scan a receipt</h2>
+      <div id="scan-body">
+        <label class="scan-drop" for="scan-file" id="scan-drop-label">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Tap to take a photo or choose one from your library</span>
+          <input id="scan-file" type="file" accept="image/*" capture="environment" hidden />
+        </label>
+
+        <div id="scan-progress" class="scan-progress" hidden>
+          <div class="scan-progress-bar"><div id="scan-progress-fill"></div></div>
+          <span id="scan-progress-text">Reading receipt…</span>
+        </div>
+
+        <p id="scan-error" class="scan-error" hidden></p>
+
+        <div id="scan-review" hidden>
+          <div class="scan-meta">
+            <div>
+              <label for="scan-store">Store</label>
+              <input id="scan-store" type="text" maxlength="50" placeholder="e.g. ALDI" />
+            </div>
+            <div>
+              <label for="scan-date">Date</label>
+              <input id="scan-date" type="date" />
+            </div>
+          </div>
+          <p class="scan-hint">Reading isn't perfect — uncheck anything that isn't an item, fix names or prices, and set a category for new items. Rows already in your pantry are matched by name automatically.</p>
+          <div id="scan-rows"></div>
+          <button type="button" class="ghost-btn" id="scan-add-row">+ Add a row</button>
+          <div class="add-actions">
+            <button type="button" class="primary-btn" id="scan-commit">Add checked items to pantry</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
 <main id="sections">
   <p class="empty-state">Loading your pantry…</p>
 </main>
-
-<details class="add-card" id="add-card">
-  <summary>
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-    Add an item
-  </summary>
-  <form id="add-form">
-    <div class="add-grid">
-      <div class="full">
-        <label for="f-name">Item name</label>
-        <input id="f-name" type="text" required maxlength="60" placeholder="e.g. Cumin seeds" />
-      </div>
-      <div>
-        <label for="f-category">Category</label>
-        <input id="f-category" list="cat-options" maxlength="40" placeholder="e.g. Whole Spices" required />
-        <datalist id="cat-options"></datalist>
-      </div>
-      <div>
-        <label for="f-stock">Stock level</label>
-        <select id="f-stock">
-          <option value="Adequate" selected>Adequate</option>
-          <option value="Medium">Medium</option>
-          <option value="Low">Low</option>
-        </select>
-      </div>
-      <div class="full">
-        <label for="f-location">Location <span style="text-transform:none;">(optional)</span></label>
-        <input id="f-location" type="text" maxlength="60" placeholder="e.g. Top shelf, garage" />
-      </div>
-      <div>
-        <label for="f-price">Price paid <span style="text-transform:none;">(optional)</span></label>
-        <input id="f-price" type="number" step="0.01" min="0" placeholder="e.g. 6.99" />
-      </div>
-      <div>
-        <label for="f-store">Bought at <span style="text-transform:none;">(optional)</span></label>
-        <input id="f-store" type="text" maxlength="50" placeholder="e.g. Costco" />
-      </div>
-      <div class="full">
-        <label for="f-buy-date">Purchase date <span style="text-transform:none;">(optional)</span></label>
-        <input id="f-buy-date" type="date" />
-      </div>
-    </div>
-    <div class="add-actions">
-      <button class="primary-btn" type="submit">Add to pantry</button>
-    </div>
-  </form>
-</details>
-
-<details class="add-card" id="scan-card">
-  <summary>
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-    Scan a receipt
-  </summary>
-  <div id="scan-body">
-    <label class="scan-drop" for="scan-file" id="scan-drop-label">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-      <span>Tap to take a photo or choose one from your library</span>
-      <input id="scan-file" type="file" accept="image/*" capture="environment" hidden />
-    </label>
-
-    <div id="scan-progress" class="scan-progress" hidden>
-      <div class="scan-progress-bar"><div id="scan-progress-fill"></div></div>
-      <span id="scan-progress-text">Reading receipt…</span>
-    </div>
-
-    <p id="scan-error" class="scan-error" hidden></p>
-
-    <div id="scan-review" hidden>
-      <div class="scan-meta">
-        <div>
-          <label for="scan-store">Store</label>
-          <input id="scan-store" type="text" maxlength="50" placeholder="e.g. ALDI" />
-        </div>
-        <div>
-          <label for="scan-date">Date</label>
-          <input id="scan-date" type="date" />
-        </div>
-      </div>
-      <p class="scan-hint">Reading isn't perfect — uncheck anything that isn't an item, fix names or prices, and set a category for new items. Rows already in your pantry are matched by name automatically.</p>
-      <div id="scan-rows"></div>
-      <button type="button" class="ghost-btn" id="scan-add-row">+ Add a row</button>
-      <div class="add-actions">
-        <button type="button" class="primary-btn" id="scan-commit">Add checked items to pantry</button>
-      </div>
-    </div>
-  </div>
-</details>
 
 <p class="status-line" id="status-line"></p>
 

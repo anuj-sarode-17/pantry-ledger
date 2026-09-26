@@ -183,6 +183,35 @@
     return cur === "Adequate" ? "Medium" : cur === "Medium" ? "Low" : "Adequate";
   }
 
+  // ---- quick-action panel toggles (Add item / Scan receipt) ----
+  // Each button "becomes" its panel: the button row hides, the panel takes
+  // its place, and "Back" reverses it. Exposed as openPanel/closePanel so
+  // scan.js can return to the button row after a successful scan too.
+  var quickActions = document.getElementById("quick-actions");
+  var addToggleBtn = document.getElementById("add-toggle-btn");
+  var scanToggleBtn = document.getElementById("scan-toggle-btn");
+  var addPanel = document.getElementById("add-panel");
+  var scanPanel = document.getElementById("scan-panel");
+  var addBackBtn = document.getElementById("add-back-btn");
+  var scanBackBtn = document.getElementById("scan-back-btn");
+
+  function openPanel(panel) {
+    quickActions.hidden = true;
+    addPanel.hidden = panel !== addPanel;
+    scanPanel.hidden = panel !== scanPanel;
+  }
+  function closePanel() {
+    addPanel.hidden = true;
+    scanPanel.hidden = true;
+    quickActions.hidden = false;
+  }
+  window.closePanel = closePanel; // used by app.js's own add-form handler below and by scan.js
+
+  addToggleBtn.addEventListener("click", function () { openPanel(addPanel); document.getElementById("f-name").focus(); });
+  scanToggleBtn.addEventListener("click", function () { openPanel(scanPanel); });
+  addBackBtn.addEventListener("click", closePanel);
+  scanBackBtn.addEventListener("click", closePanel);
+
   // ---- events ----
   document.getElementById("search").addEventListener("input", function (e) {
     state.search = e.target.value;
@@ -343,7 +372,7 @@
     cacheSave();
     e.target.reset();
     document.getElementById("f-stock").value = "Adequate";
-    document.getElementById("add-card").open = false;
+    closePanel(document.getElementById("add-panel"));
 
     if (db) {
       db.collection("items").add({ name: name, category: category, stock: stock, location: location, purchases: purchases, createdAt: Date.now() })
